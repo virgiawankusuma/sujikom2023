@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Books extends Migration
+class Users extends Migration
 {
     public function up()
     {
@@ -15,25 +15,29 @@ class Books extends Migration
                 'unsigned' => true,
                 'auto_increment' => true
             ],
-            'title' => [
+            'nama' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255
             ],
-            'slug' => [
+            'tanggal_lahir' => [
+                'type' => 'DATE',
+                'null' => true
+            ],
+            'nomor_telepon' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255
             ],
-            'author' => [
+            'alamat' => [
                 'type' => 'VARCHAR',
-                'constraint' => 128
+                'constraint' => 255
             ],
-            'publisher' => [
+            'email' => [
                 'type' => 'VARCHAR',
-                'constraint' => 128
+                'constraint' => 255
             ],
-            'cover' => [
+            'password' => [
                 'type' => 'VARCHAR',
-                'constraint' => 128
+                'constraint' => 255
             ],
             'created_at' => [
                 'type' => 'DATETIME',
@@ -44,15 +48,14 @@ class Books extends Migration
                 'null' => true
             ]
         ];
-        $this->forge->addField($field);
-
         $this->forge->addKey('id', true);
-        $this->forge->createTable('books');
 
+        $this->forge->addField($field);
+        $this->forge->createTable('users');
     }
 
     public function down()
     {
-        $this->forge->dropTable('books');
+        $this->forge->dropTable('users');
     }
 }
