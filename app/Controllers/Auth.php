@@ -60,11 +60,63 @@ class Auth extends BaseController
     {
         $data = [
             'title' => 'Register | Kegiatan',
+            'errors' => validation_errors(),
         ];
 
-        
-
         return view('auth/register', $data);
+    }
+
+    public function saveRegister()
+    {
+        $validationRules = [
+            'nama' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} cannot be blank.'
+                ]
+            ],
+            'email' => [
+                'rules' => 'required|is_unique[users.email]|valid_email',
+                'errors' => [
+                    'required' => '{field} cannot be blank.',
+                    'is_unique' => '{field} already registered.',
+                    'valid_email' => '{field} must be a valid email address.'
+                ]
+            ],
+            'password' => [
+                'rules' => 'required|min_length[8]|matches[repassword]',
+                'errors' => [
+                    'required' => '{field} cannot be blank.',
+                    'min_length' => '{field} must be at least 8 characters.',
+                    'matches' => '{field} does not match.'
+                ]
+            ],
+            'repassword' => [
+                'rules' => 'required|min_length[8]|matches[password]',
+                'errors' => [
+                    'required' => '{field} cannot be blank.',
+                    'min_length' => '{field} must be at least 8 characters.',
+                    'matches' => '{field} does not match.'
+                ]
+            ],
+        ];
+
+        if ($this->validate($validationRules)) {
+            $inputData = [
+                'nama' => $this->request->getVar('nama'),
+                'email' => $this->request->getVar('email'),
+                'password' => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT),
+                'repassword' => password_hash($this->request->getVar('repassword'), PASSWORD_DEFAULT),
+            ];
+
+            $this->userModel->save($inputData);
+
+            session()->setFlashdata('message', 'Registration success, please login.');
+
+            return redirect()->to('/login');
+        } else {
+            return redirect()->back()->withInput();
+        }
     }
     
     public function logout() {

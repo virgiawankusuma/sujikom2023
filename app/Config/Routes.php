@@ -36,6 +36,7 @@ $routes->get('/kegiatan/(:any)', 'kegiatan::detail/$1');
 $routes->get('/login', 'auth::index');
 $routes->post('/login', 'auth::login');
 $routes->get('/register', 'auth::register');
+$routes->post('/register', 'auth::saveRegister');
 $routes->get('/logout', 'auth::logout');
 
 $routes->get('/admin', 'admin::index');

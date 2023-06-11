@@ -21,15 +21,22 @@
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-4"><?= $title; ?></h1>
                                 </div>
-                                <?php if (session()->getFlashdata('message')) { ?>
+                                <?php if (session()->getFlashdata('warnMessage')) { ?>
                                 <div class="alert alert-warning alert-dismissible fade show">
-                                    <strong>Sorry!</strong> <?= session()->getFlashdata('message'); ?>
+                                    <strong>Sorry!</strong> <?= session()->getFlashdata('warnMessage'); ?>
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <?php }; ?>
-                                <!-- _message_block -->
+                                <?php if (session()->getFlashdata('message')) { ?>
+                                <div class="alert alert-success alert-dismissible fade show">
+                                    <?= session()->getFlashdata('message'); ?>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <?php }; ?>
                                 <?= form_open('login', ['method' => 'post']); ?>
                                 <div class="form-group">
                                     <input type="text" class="form-control form-control-user <?= (session()->getFlashdata('errorMessage') === 'Email not registered') ? 'is-invalid' : ''; ?>" id="email" name="email" placeholder="Email" autofocus>
