@@ -3,16 +3,16 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\UserModel;
+use App\Models\PenggunaModel;
 use App\Models\KegiatanModel;
 
 class Kegiatan extends BaseController
 {
-    protected $userModel;
+    protected $penggunaModel;
     protected $kegiatanModel;
     public function __construct()
     {
-        $this->userModel = new UserModel();
+        $this->penggunaModel = new PenggunaModel();
         $this->kegiatanModel = new KegiatanModel();
     }
  

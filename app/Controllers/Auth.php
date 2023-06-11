@@ -3,15 +3,15 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\UserModel;
+use App\Models\PenggunaModel;
 
 class Auth extends BaseController
 {
 
-    protected $userModel;
+    protected $penggunaModel;
     public function __construct()
     {
-        $this->userModel = new UserModel();
+        $this->penggunaModel = new PenggunaModel();
     }
 
     public function index()
@@ -32,7 +32,7 @@ class Auth extends BaseController
         $email = $this->request->getVar('email');
         $password = $this->request->getVar('password');
         
-        $user = $this->userModel->getUser($email)->first();
+        $user = $this->penggunaModel->getPengguna($email)->first();
         
         // dd($user);
         if($user) {
@@ -109,7 +109,7 @@ class Auth extends BaseController
                 'repassword' => password_hash($this->request->getVar('repassword'), PASSWORD_DEFAULT),
             ];
 
-            $this->userModel->save($inputData);
+            $this->penggunaModel->save($inputData);
 
             session()->setFlashdata('message', 'Registration success, please login.');
 

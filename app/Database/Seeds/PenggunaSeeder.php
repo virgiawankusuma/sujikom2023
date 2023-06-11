@@ -5,7 +5,7 @@ namespace App\Database\Seeds;
 use CodeIgniter\Database\Seeder;
 use CodeIgniter\I18n\Time;
 
-class UsersSeeder extends Seeder
+class PenggunaSeeder extends Seeder
 {
     public function run()
     {
@@ -23,6 +23,6 @@ class UsersSeeder extends Seeder
             ],
         ];
 
-        $this->db->table('users')->insertBatch($data);
+        $this->db->table('pengguna')->insertBatch($data);
     }
 }

@@ -3,20 +3,20 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\UserModel;
 use App\Models\KegiatanModel;
+use App\Models\PenggunaModel;
 
 class Admin extends BaseController
 {
 
-    protected $userModel;
+    protected $penggunaModel;
     protected $kegiatanModel;
     protected $user;
     public function __construct()
     {
-        $this->userModel = new UserModel();
+        $this->penggunaModel = new PenggunaModel();
         $this->kegiatanModel = new KegiatanModel();
-        $this->user = $this->userModel->getUser(session()->get('email'))->first();
+        $this->user = $this->penggunaModel->getPengguna(session()->get('email'))->first();
     }
     
     public function index()
@@ -258,7 +258,7 @@ class Admin extends BaseController
         if ($this->validate($validationRules)) {
             // dd($this->request->getVar());
             $id = $this->request->getVar('id');
-            $this->userModel->save([
+            $this->penggunaModel->save([
                 'id' => $id,
                 'nama' => $this->request->getVar('nama'),
                 'tanggal_lahir' => $this->request->getVar('tanggal_lahir'),
@@ -311,7 +311,7 @@ class Admin extends BaseController
 
         if ($this->validate($validationRules)) {
             $id = $this->request->getVar('id');
-            $this->userModel->save([
+            $this->penggunaModel->save([
                 'id' => $id,
                 'password' => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT)
             ]);
