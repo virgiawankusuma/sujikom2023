@@ -11,40 +11,56 @@ class Admin extends BaseController
 
     protected $userModel;
     protected $kegiatanModel;
+    protected $user;
     public function __construct()
     {
         $this->userModel = new UserModel();
         $this->kegiatanModel = new KegiatanModel();
+        $this->user = $this->userModel->getUser(session()->get('email'))->first();
     }
-
+    
     public function index()
     {
+        if (is_logged_in() === false) {
+            return redirect()->to('/login');
+        }
+
         $data = [
             'title' => 'Admin | Kegiatan',
+            'user' => $this->user
         ];
-
         return view('admin/index', $data);
     }
-
+    
     public function kegiatan()
     {
+        if (is_logged_in() === false) {
+            return redirect()->to('/login');
+        }
+        
         $kegiatans = $this->kegiatanModel->getKegiatan();
-
+        
         $data = [
             'title' => 'Semua | Kegiatan',
-            'kegiatans' => $kegiatans
+            'kegiatans' => $kegiatans,
+            'user' => $this->user
         ];
-
+        
         return view('admin/kegiatan', $data);
     }
-
+    
     public function create()
     {
+        if (is_logged_in() === false) {
+            return redirect()->to('/login');
+        }
+        
         $data = [
             'title' => 'Tambah | Kegiatan',
-            'errors' => validation_errors()
+            'errors' => validation_errors(),
+            'user' => $this->user
         ];
-
+        
         return view('admin/create', $data);
     }
 
@@ -85,6 +101,10 @@ class Admin extends BaseController
 
     public function save()
     {
+        if (is_logged_in() === false) {
+            return redirect()->to('/login');
+        }
+        
         // validation
         $this->__saveValidation();
 
@@ -98,7 +118,7 @@ class Admin extends BaseController
         // dd($inputData);
 
         $this->kegiatanModel->save($inputData);
-
+        
         session()->setFlashdata('message', 'Kegiatan has been added.');
 
         return redirect()->to('/admin/kegiatan');
@@ -116,10 +136,15 @@ class Admin extends BaseController
     }
 
     public function edit($slug) {
+        if (is_logged_in() === false) {
+            return redirect()->to('/login');
+        }
+        
         $data = [
           'title' => 'Edit | Kegiatan',
           'kegiatan' => $this->kegiatanModel->getKegiatan($slug),
-          'errors' => validation_errors()
+          'errors' => validation_errors(),
+          'user' => $this->user
         ];
     
         return view('admin/edit', $data);

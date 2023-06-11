@@ -21,13 +21,27 @@
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-4"><?= $title; ?></h1>
                                 </div>
+                                <?php if (session()->getFlashdata('message')) { ?>
+                                <div class="alert alert-warning alert-dismissible fade show">
+                                    <strong>Sorry!</strong> <?= session()->getFlashdata('message'); ?>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <?php }; ?>
                                 <!-- _message_block -->
                                 <?= form_open('login', ['method' => 'post']); ?>
                                 <div class="form-group">
-                                    <input type="text" class="form-control form-control-user" id="email" name="email" placeholder="Email" value="" autofocus>
+                                    <input type="text" class="form-control form-control-user <?= (session()->getFlashdata('errorMessage') === 'Email not registered') ? 'is-invalid' : ''; ?>" id="email" name="email" placeholder="Email" autofocus>
+                                    <div class="invalid-feedback">
+                                        <?= session()->getFlashdata('errorMessage'); ?>
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" class="form-control form-control-user" id="password" name="password" placeholder="Kata sandi">
+                                    <input type="password" class="form-control form-control-user <?= (session()->getFlashdata('errorMessage') === 'Password incorrect') ? 'is-invalid' : ''; ?>" id="password" name="password" placeholder="Kata sandi">
+                                    <div class="invalid-feedback">
+                                        <?= session()->getFlashdata('errorMessage'); ?>
+                                    </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-user btn-block">
                                     Login

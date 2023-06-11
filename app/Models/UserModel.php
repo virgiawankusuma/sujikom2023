@@ -10,7 +10,7 @@ class UserModel extends Model
     protected $useTimestamps = false;
     protected $primaryKey = 'id';
 
-    protected $allowedFields = ['nama', 'tanggal_lahir', 'nomor_telepon', 'alamat', 'email'];
+    protected $allowedFields = ['nama', 'tanggal_lahir', 'nomor_telepon', 'alamat', 'email', 'password'];
 
     public function getUser($email) {
         return $this->where(['email' => $email]);

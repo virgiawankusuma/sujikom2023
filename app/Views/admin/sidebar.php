@@ -27,7 +27,6 @@
         <a class="nav-link pb-1" href="<?= base_url('admin/kegiatan'); ?>">
             <i class="fas fa-fw fa-thumbtack" style="transform: rotate(45deg);"></i>
             <span>Semua Kegiatan</span>
-            <a class="collapse-item pt-1" href="<?= base_url('admin/kegiatan'); ?>">Kegiatan</a>
         </a>
     </li>
 

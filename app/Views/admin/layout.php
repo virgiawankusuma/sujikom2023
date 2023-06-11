@@ -83,7 +83,7 @@
                 <div class="modal-body">Pilih "Keluar" di bawah jika Anda siap untuk mengakhiri sesi Anda saat ini.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
-                    <a class="btn btn-primary" href="/admin/logout">Keluar</a>
+                    <a class="btn btn-primary" href="/logout">Keluar</a>
                 </div>
             </div>
         </div>

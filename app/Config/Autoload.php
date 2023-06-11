@@ -97,6 +97,7 @@ class Autoload extends AutoloadConfig
         'form',
         'validation',
         'session',
-        'url'
+        'url',
+        'is_logged_in_helper'
     ];
 }
