@@ -214,4 +214,124 @@ class Admin extends BaseController
 
         return redirect()->to('/admin/kegiatan');
     }
+
+    public function profile()
+    {
+        if (is_logged_in() === false) {
+            return redirect()->to('/login');
+        }
+        
+        $data = [
+            'title' => 'Profile | Admin',
+            'user' => $this->user,
+            'errors' => validation_errors()
+        ];
+        
+        return view('admin/profile', $data);
+    }
+
+    public function updateProfile()
+    {   
+        $validationRules = [
+            'nama' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} cannot be blank.'
+                ]
+            ],
+            'email' => [
+                'rules' => 'required|valid_email',
+                'errors' => [
+                    'required' => '{field} cannot be blank.',
+                    'valid_email' => '{field} must be a valid email address.'
+                ]
+            ],
+            'tanggal_lahir' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} cannot be blank.'
+                ]
+            ],
+            'nomor_telepon' => [
+                'rules' => 'required|max_length[13]',
+                'errors' => [
+                    'required' => '{field} cannot be blank.'
+                ]
+            ],
+            'alamat' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} cannot be blank.'
+                ]
+            ]
+        ];
+
+        if ($this->validate($validationRules)) {
+            // dd($this->request->getVar());
+            $id = $this->request->getVar('id');
+            $this->userModel->save([
+                'id' => $id,
+                'nama' => $this->request->getVar('nama'),
+                'tanggal_lahir' => $this->request->getVar('tanggal_lahir'),
+                'nomor_telepon' => $this->request->getVar('nomor_telepon'),
+                'alamat' => $this->request->getVar('alamat'),
+                'email' => $this->request->getVar('email'),
+            ]);
+
+            session()->setFlashdata('message', 'Profile has been updated.');
+
+            return redirect()->to('/admin/profil');
+        } else {
+            return redirect()->back()->withInput();
+        }
+    }
+
+    public function changePassword()
+    {
+        if (is_logged_in() === false) {
+            return redirect()->to('/login');
+        }
+        
+        $data = [
+            'title' => 'Ubah Password | Admin',
+            'user' => $this->user,
+            'errors' => validation_errors()
+        ];
+        
+        return view('admin/change-password', $data);
+    }
+
+    public function updatePassword()
+    {
+        $validationRules = [
+            'password' => [
+                'rules' => 'required|min_length[8]',
+                'errors' => [
+                    'required' => '{field} cannot be blank.',
+                    'min_length' => '{field} must be at least 8 characters.'
+                ]
+            ],
+            'repassword' => [
+                'rules' => 'required|matches[password]',
+                'errors' => [
+                    'required' => '{field} cannot be blank.',
+                    'matches' => '{field} must be the same as password.'
+                ]
+            ]
+        ];
+
+        if ($this->validate($validationRules)) {
+            $id = $this->request->getVar('id');
+            $this->userModel->save([
+                'id' => $id,
+                'password' => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT)
+            ]);
+
+            session()->setFlashdata('message', 'Password has been updated.');
+
+            return redirect()->to('/admin/ubah-password');
+        } else {
+            return redirect()->back()->withInput();
+        }
+    }
 }

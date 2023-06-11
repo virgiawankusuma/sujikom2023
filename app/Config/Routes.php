@@ -40,6 +40,10 @@ $routes->post('/register', 'auth::saveRegister');
 $routes->get('/logout', 'auth::logout');
 
 $routes->get('/admin', 'admin::index');
+$routes->get('/admin/profil', 'admin::profile');
+$routes->put('/admin/profil', 'admin::updateProfile');
+$routes->get('/admin/ubah-password', 'admin::changePassword');
+$routes->put('/admin/ubah-password', 'admin::updatePassword');
 $routes->get('/admin/kegiatan', 'admin::kegiatan');
 $routes->get('/admin/kegiatan/add', 'admin::create');
 $routes->post('/admin/kegiatan/save', 'admin::save');
