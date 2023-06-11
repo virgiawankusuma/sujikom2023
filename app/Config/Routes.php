@@ -50,6 +50,8 @@ $routes->post('/admin/kegiatan/save', 'admin::save');
 $routes->delete('admin/kegiatan/(:num)', 'admin::delete/$1');
 $routes->get('/admin/kegiatan/(:any)', 'admin::edit/$1');
 $routes->put('/admin/kegiatan/(:num)', 'admin::update/$1');
+
+service('auth')->routes($routes);
 /*
  * --------------------------------------------------------------------
  * Additional Routing
