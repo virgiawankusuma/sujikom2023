@@ -47,7 +47,7 @@
                         <?= form_close(); ?>
                         <hr>
                         <div class="text-center">
-                            <a class="small" href="<?= base_url('masuk'); ?>">Sudah terdaftar? Masuk</a>
+                            <a class="small" href="<?= base_url('login'); ?>">Sudah terdaftar? Masuk</a>
                         </div>
                     </div>
                 </div>
