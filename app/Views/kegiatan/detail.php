@@ -19,9 +19,20 @@
           <div class="col-md-8">
             <div class="card-body">
               <h5 class="card-title"><?= $kegiatan['nama_kegiatan'];?></h5>
-              <p class="card-text"><b>Tanggal Kegiatan : </b><?= $kegiatan['tanggal_kegiatan'];?></p>
-              <p class="card-text"><small class="text-body-secondary"><b>Tanggal Mulai : </b><?= $kegiatan['tanggal_mulai'];?></small></p>
-              <p class="card-text"><small class="text-body-secondary"><b>Batas Pendaftaran : </b><?= $kegiatan['batas_pendaftaran'];?></small></p>
+              <p class="card-text">Tanggal Kegiatan: 
+                <b><?= date('d F Y', strtotime($kegiatan['tanggal_kegiatan'])); ?></b>
+              </p>
+              <p class="card-text">
+                <small class="text-body-secondary">
+                  Tanggal Mulai: 
+                  <b><?= date('d F Y', strtotime($kegiatan['tanggal_mulai'])); ?></b>
+                </small>
+              </p>
+              <p class="card-text">Batas Pendaftaran: 
+                <small class="text-body-secondary">
+                  <b><?= date('d F Y, H:i', strtotime($kegiatan['batas_pendaftaran'])) . " WIB"; ?></b>
+                </small>
+              </p>
               <br><br>
               <a href="/">Kembali ke Beranda</a>
             </div>

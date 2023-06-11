@@ -29,7 +29,7 @@
           <label for="tanggal_kegiatan" class="col-3 form-label">Tanggal Kegiatan</label>
           <div class="col-9">
             <input 
-              type="text" 
+              type="date" 
               class="form-control <?=(isset($errors['tanggal_kegiatan'])) ? 'is-invalid' : '';?>" 
               id="tanggal_kegiatan" 
               name="tanggal_kegiatan"
@@ -44,7 +44,7 @@
           <label for="tanggal_mulai" class="col-3 form-label">Tanggal Mulai</label>
           <div class="col-9">
             <input 
-              type="text" 
+              type="date" 
               class="form-control <?=(isset($errors['tanggal_mulai'])) ? 'is-invalid' : '';?>" 
               id="tanggal_mulai" 
               name="tanggal_mulai"
@@ -59,14 +59,14 @@
           <label for="batas_pendaftaran" class="col-3 form-label">Batas Pendaftaran</label>
           <div class="col-9">
             <input 
-              type="text" 
+              type="datetime-local" 
               class="form-control <?=(isset($errors['batas_pendaftaran'])) ? 'is-invalid' : '';?>" 
               id="batas_pendaftaran" 
               name="batas_pendaftaran"
               value="<?= old('batas_pendaftaran') ;?>"
             >
             <div class="invalid-feedback">
-              <?= validation_show_error('tanggal_mulai');?>
+              <?= validation_show_error('batas_pendaftaran');?>
             </div>
           </div>
         </div>

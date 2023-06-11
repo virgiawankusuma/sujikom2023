@@ -9,8 +9,8 @@
     <div class="col-12">
       <div class="row">
         <?php foreach($kegiatans as $kegiatan) { ?>
-        <div class="col-lg-3">
-          <div class="card" style="width: 18rem;">
+        <div class="mb-4 col-12 col-md-6 col-lg-4 col-xl-3">
+          <div class="card">
             <img 
               src="/image/kegiatan/<?= $kegiatan['cover'];?>" 
               class="card-img-top" 
@@ -20,9 +20,15 @@
               <a href="/kegiatan/<?= $kegiatan['slug'];?>">
                 <h5 class="card-title"><?= $kegiatan['nama_kegiatan'];?></h5>
               </a>
-              <p class="card-title">Tanggal Kegiatan: <b><?= $kegiatan['tanggal_kegiatan'];?></b></p>
-              <p class="card-title">Tanggal Mulai: <b><?= $kegiatan['tanggal_mulai'];?></b></p>
-              <p class="card-title">Batas Pendaftaran: <b><?= $kegiatan['batas_pendaftaran'];?></b></p>
+              <p class="card-text">Tanggal Kegiatan: 
+                <b><?= date('d F Y', strtotime($kegiatan['tanggal_kegiatan'])); ?></b>
+              </p>
+              <p class="card-text">Tanggal Mulai: 
+                <b><?= date('d F Y', strtotime($kegiatan['tanggal_mulai'])); ?></b>
+              </p>
+              <p class="card-text">Batas Pendaftaran: 
+                <b><?= date('d F Y, H:i', strtotime($kegiatan['batas_pendaftaran'])) . " WIB"; ?></b>
+              </p>
             </div>
           </div>
         </div>

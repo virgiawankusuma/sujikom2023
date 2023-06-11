@@ -64,8 +64,13 @@ class Admin extends BaseController
         return view('admin/create', $data);
     }
 
-    private function __saveValidation()
+    public function save()
     {
+        if (is_logged_in() === false) {
+            return redirect()->to('/login');
+        }
+        
+        // validation
         $validationRules = [
             'nama_kegiatan' => [
                 'rules' => 'required|is_unique[kegiatan.nama_kegiatan]',
@@ -94,36 +99,25 @@ class Admin extends BaseController
             ],
         ];
 
-        if (!$this->validate($validationRules)) {
+        if ($this->validate($validationRules)) {
+            $inputData = [
+                'nama_kegiatan' => $this->request->getVar('nama_kegiatan'),
+                'slug' => url_title($this->request->getVar('nama_kegiatan'), '-', true),
+                'tanggal_kegiatan' => $this->request->getVar('tanggal_kegiatan'),
+                'tanggal_mulai' => $this->request->getVar('tanggal_mulai'),
+                'batas_pendaftaran' => $this->request->getVar('batas_pendaftaran'),
+            ];
+    
+            $this->kegiatanModel->save($inputData);
+            
+            session()->setFlashdata('message', 'Kegiatan has been added.');
+    
+            return redirect()->to('/admin/kegiatan');
+        } else {
             return redirect()->back()->withInput();
         }
+
     }
-
-    public function save()
-    {
-        if (is_logged_in() === false) {
-            return redirect()->to('/login');
-        }
-        
-        // validation
-        $this->__saveValidation();
-
-        $inputData = [
-            'nama_kegiatan' => $this->request->getVar('nama_kegiatan'),
-            'slug' => url_title($this->request->getVar('nama_kegiatan'), '-', true),
-            'tanggal_kegiatan' => $this->request->getVar('tanggal_kegiatan'),
-            'tanggal_mulai' => $this->request->getVar('tanggal_mulai'),
-            'batas_pendaftaran' => $this->request->getVar('batas_pendaftaran'),
-        ];
-        // dd($inputData);
-
-        $this->kegiatanModel->save($inputData);
-        
-        session()->setFlashdata('message', 'Kegiatan has been added.');
-
-        return redirect()->to('/admin/kegiatan');
-    }
-
 
     public function delete($id)
     {
@@ -150,8 +144,17 @@ class Admin extends BaseController
         return view('admin/edit', $data);
     }
 
-    private function __updateValidation($ruleTitle)
-    {
+    public function update($id) {
+        // cek judul
+        $kegiatanOld = $this->kegiatanModel->getKegiatan($this->request->getVar('slug'));
+    
+        if($kegiatanOld['nama_kegiatan'] == $this->request->getVar('nama_kegiatan')) {
+          $ruleTitle = 'required';
+        } else {
+          $ruleTitle = 'required|is_unique[kegiatan.nama_kegiatan]';
+        }
+    
+        // validation
         $validationRules = [
             'nama_kegiatan' => [
                 'rules' => $ruleTitle,
@@ -180,37 +183,23 @@ class Admin extends BaseController
             ],
         ];
 
-        if (!$this->validate($validationRules)) {
+        if ($this->validate($validationRules)) {
+            $slug = url_title($this->request->getVar('nama_kegiatan'), '-', true);
+            $inputData = [
+                'id' => $id,
+                'nama_kegiatan' => $this->request->getVar('nama_kegiatan'),
+                'slug' => $slug,
+                'tanggal_kegiatan' => $this->request->getVar('tanggal_kegiatan'),
+                'tanggal_mulai' => $this->request->getVar('tanggal_mulai'),
+                'batas_pendaftaran' => $this->request->getVar('batas_pendaftaran'),
+            ];
+            $this->kegiatanModel->save($inputData);
+        
+            session()->setFlashdata('message', 'Kegiatan has been added.');
+        } else {
             return redirect()->back()->withInput();
         }
-    }
-
-    public function update($id) {
-        // cek judul
-        $kegiatanOld = $this->kegiatanModel->getKegiatan($this->request->getVar('slug'));
-        // dd($kegiatanOld);
     
-        if($kegiatanOld['nama_kegiatan'] == $this->request->getVar('nama_kegiatan')) {
-          $ruleTitle = 'required';
-        } else {
-          $ruleTitle = 'required|is_unique[kegiatan.nama_kegiatan]';
-        }
-    
-        // validation
-        $this->__updateValidation($ruleTitle);
-    
-        $slug = url_title($this->request->getVar('nama_kegiatan'), '-', true);
-        $inputData = [
-            'id' => $id,
-            'nama_kegiatan' => $this->request->getVar('nama_kegiatan'),
-            'slug' => $slug,
-            'tanggal_kegiatan' => $this->request->getVar('tanggal_kegiatan'),
-            'tanggal_mulai' => $this->request->getVar('tanggal_mulai'),
-            'batas_pendaftaran' => $this->request->getVar('batas_pendaftaran'),
-        ];
-        $this->kegiatanModel->save($inputData);
-    
-        session()->setFlashdata('message', 'Kegiatan has been added.');
 
         return redirect()->to('/admin/kegiatan');
     }

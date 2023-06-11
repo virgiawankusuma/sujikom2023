@@ -61,9 +61,15 @@
                   </div>
               </td>
               <td><?= $kegiatan['slug']; ?></td>
-              <td><?= $kegiatan['tanggal_kegiatan']; ?></td>
-              <td><?= $kegiatan['tanggal_mulai']; ?></td>
-              <td><?= $kegiatan['batas_pendaftaran']; ?></td>
+              <td>
+                <?= date('d F Y', strtotime($kegiatan['tanggal_kegiatan'])); ?>
+              </td>
+              <td>
+                <?= date('d F Y', strtotime($kegiatan['tanggal_mulai'])); ?>
+              </td>
+              <td>
+                <?= date('d F Y, H:i', strtotime($kegiatan['batas_pendaftaran'])) . " WIB"; ?>
+              </td>
             </tr>
         <?php } ?>
         </tbody>
