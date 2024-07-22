@@ -23,17 +23,24 @@ class Kegiatan extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255
             ],
-            'tanggal_kegiatan' => [
-                'type' => 'DATE',
-                'null' => true
+            'kategori_id' => [
+                'type' => 'INT',
+                'constraint' => 11
             ],
-            'tanggal_mulai' => [
+            'deskripsi_kegiatan' => [
+                'type' => 'TEXT'
+            ],
+            'tanggal_kegiatan' => [
                 'type' => 'DATE',
                 'null' => true
             ],
             'batas_pendaftaran' => [
                 'type' => 'DATETIME',
                 'null' => true
+            ],
+            'link_pendaftaran' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255
             ],
             'cover' => [
                 'type' => 'VARCHAR',
@@ -51,6 +58,7 @@ class Kegiatan extends Migration
         $this->forge->addKey('id', true);
 
         $this->forge->addField($field);
+        $this->forge->addForeignKey('kategori_id', 'kategori_kegiatan', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('kegiatan');
     }
 
