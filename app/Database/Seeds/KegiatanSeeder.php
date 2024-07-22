@@ -28,5 +28,22 @@ class KegiatanSeeder extends Seeder
             ];
             $this->db->table('kegiatan')->insert($data);
         }
+
+        $data_test = [
+            [
+                'nama_kegiatan' => 'Example Kegiatan',
+                'slug' => 'example-slug',
+                'kategori_id' => 1,
+                'deskripsi_kegiatan' => 'Deskripsi kegiatan',
+                'tanggal_kegiatan' => '2024-07-22',
+                'batas_pendaftaran' => Time::now(),
+                'link_pendaftaran' => 'https://example.com',
+                'cover' => 'default.jpg',
+                'created_at' => Time::now(),
+                'updated_at' => Time::now()
+            ],
+        ];
+
+        $this->db->table('kegiatan')->insertBatch($data_test);
     }
 }

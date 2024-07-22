@@ -30,6 +30,12 @@ $routes->set404Override();
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 // $routes->get('/', 'Home::index');
+// redirect base url to kegiatan
+
+// $routes->get('/', function () {
+//     return redirect()->to('/kegiatan');
+// });
+// $routes->get('/kegiatan', 'kegiatan::index');
 $routes->get('/', 'kegiatan::index');
 $routes->get('/kegiatan/(:any)', 'kegiatan::detail/$1');
 
