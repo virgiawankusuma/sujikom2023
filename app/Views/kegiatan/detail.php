@@ -19,6 +19,7 @@
           <div class="col-md-8">
             <div class="card-body">
               <h5 class="card-title"><?= $kegiatan['nama_kegiatan'];?></h5>
+              <span class="badge bg-primary"><?= $kegiatan['nama_kategori'];?></span>
               <p class="card-text">Tanggal Kegiatan: 
                 <b><?= date('d F Y', strtotime($kegiatan['tanggal_kegiatan'])); ?></b>
               </p>
@@ -31,6 +32,9 @@
               <p class="card-text">Deskripsi Kegiatan:
                 <?= $kegiatan['deskripsi_kegiatan'];?>
               </p>
+              <br>
+              <p class="card-text">Link Pendaftaran: 
+                <a href="<?= $kegiatan['link_pendaftaran'];?>"><?= $kegiatan['link_pendaftaran'];?></a>
               <br><br>
               <a href="/">Kembali ke Beranda</a>
             </div>
