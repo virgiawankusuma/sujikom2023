@@ -16,7 +16,7 @@
                         <div class="col-6 d-none d-lg-block">
                             <img src="<?= base_url('/image/login2.jpg'); ?>" alt="Sign in concept illustration Free Vector" class="img-fluid">
                         </div>
-                        <div class="col-6 border-left">
+                        <div class="col-12 col-lg-6 border-left">
                             <div class="p-5">
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-4"><?= $title; ?></h1>
