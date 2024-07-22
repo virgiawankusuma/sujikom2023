@@ -15,9 +15,17 @@
       </div>
     </div>
     <div class="col-12 mb-3">
-    <?php if (session()->getFlashdata('message')) { ?>
+    <?php if (session()->getFlashdata('messageSuccess')) { ?>
       <div class="alert alert-success alert-dismissible fade show">
-        <strong>Success!</strong> <?= session()->getFlashdata('message'); ?>
+        <strong>Success!</strong> <?= session()->getFlashdata('messageSuccess'); ?>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    <?php }; ?>
+    <?php if (session()->getFlashdata('messageError')) { ?>
+      <div class="alert alert-danger alert-dismissible fade show">
+        <strong>Failed!</strong> <?= session()->getFlashdata('messageError'); ?>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -27,11 +35,10 @@
       <table class="table table-hover" id="tablePosts">
         <thead>
           <tr>
-            <th class="d-none" scope="col">id</th>
+            <th scope="col">No</th>
             <th scope="col">Nama Kegiatan</th>
-            <th scope="col">Slug</th>
+            <th scope="col">Kategori</th>
             <th scope="col">Tanggal Kegiatan</th>
-            <th scope="col">Tanggal Mulai</th>
             <th scope="col">Batas Pendaftaran</th>
           </tr>
         </thead>
@@ -39,7 +46,7 @@
           <?php $i = 1;
           foreach ($kegiatans as $kegiatan) { ?>
             <tr>
-              <td class="d-none"><?= $kegiatan['id']; ?></td>
+              <td scope="col"><?= $i++; ?></td>
               <td>
                   <a href="/admin/kegiatan/<?= $kegiatan['slug']; ?>"><?= $kegiatan['nama_kegiatan']; ?></a>
                   <div class="d-flex">
@@ -51,7 +58,7 @@
                       <button 
                       type="submit"
                       class="btn btn-sm px-0 text-danger"
-                      onclick="return confirm('Yakin ingin menghapus pos <?= $kegiatan['nama_kegiatan']; ?> ?');"
+                      onclick="return confirm('Yakin ingin menghapus kegiatan <?= $kegiatan['nama_kegiatan']; ?> ?');"
                       >
                       Hapus
                     </button>
@@ -60,12 +67,9 @@
                     <a href="/kegiatan/<?=$kegiatan['slug']; ?>" class="btn btn-sm px-0 text-primary" target="_blank">Tampil</a>
                   </div>
               </td>
-              <td><?= $kegiatan['slug']; ?></td>
+              <td><?= $kegiatan['nama_kategori']; ?></td>
               <td>
                 <?= date('d F Y', strtotime($kegiatan['tanggal_kegiatan'])); ?>
-              </td>
-              <td>
-                <?= date('d F Y', strtotime($kegiatan['tanggal_mulai'])); ?>
               </td>
               <td>
                 <?= date('d F Y, H:i', strtotime($kegiatan['batas_pendaftaran'])) . " WIB"; ?>
@@ -75,11 +79,10 @@
         </tbody>
         <tfoot>
           <tr>
-            <th class="d-none" scope="col">id</th>
+            <th scope="col">No</th>
             <th scope="col">Nama Kegiatan</th>
-            <th scope="col">Slug</th>
+            <th scope="col">Kategori</th>
             <th scope="col">Tanggal Kegiatan</th>
-            <th scope="col">Tanggal Mulai</th>
             <th scope="col">Batas Pendaftaran</th>
           </tr>
         </tfoot>
