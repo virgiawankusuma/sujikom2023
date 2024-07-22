@@ -8,13 +8,14 @@ class KegiatanModel extends Model{
     protected $useTimestamps = true;
     protected $primaryKey = 'id';
 
-    protected $allowedFields = ['nama_kegiatan', 'slug', 'tanggal_kegiatan', 'tanggal_mulai', 'batas_pendaftaran', 'cover'];
+    protected $allowedFields = ['nama_kegiatan', 'slug', 'kategori_id', 'deskripsi_kegiatan', 'tanggal_kegiatan', 'batas_pendaftaran', 'link_pendaftaran', 'cover'];
 
+    // kegiatan join kategori_kegiatan
     public function getKegiatan($slug = false) {
         if ($slug == false) {
-            return $this->findAll();
+            return $this->db->query("SELECT kegiatan.*, kategori_kegiatan.nama_kategori FROM kegiatan JOIN kategori_kegiatan ON kategori_kegiatan.id = kegiatan.kategori_id")->getResultArray();
         }
-
-        return $this->where(['slug' => $slug])->first();
+        
+        return $this->db->query("SELECT kegiatan.*, kategori_kegiatan.nama_kategori FROM kegiatan JOIN kategori_kegiatan ON kategori_kegiatan.id = kegiatan.kategori_id WHERE kegiatan.slug = '$slug'")->getRowArray();
     }
 }
