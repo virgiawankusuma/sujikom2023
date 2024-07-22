@@ -7,12 +7,12 @@
       <h1>Detail Kegiatan</h1>
     </div>
     <div class="col-12">
-      <div class="card mb-3" style="max-width: 540px;">
+      <div class="card mb-3">
         <div class="row g-0">
           <div class="col-md-4">
             <img 
               src="<?= base_url('/image/kegiatan/' . $kegiatan['cover']);?>" 
-              class="img-fluid rounded-start" 
+              class="img-fluid rounded-start w-100" 
               alt="<?= $kegiatan['nama_kegiatan'];?>"
             >
           </div>
@@ -22,16 +22,14 @@
               <p class="card-text">Tanggal Kegiatan: 
                 <b><?= date('d F Y', strtotime($kegiatan['tanggal_kegiatan'])); ?></b>
               </p>
-              <p class="card-text">
-                <small class="text-body-secondary">
-                  Tanggal Mulai: 
-                  <b><?= date('d F Y', strtotime($kegiatan['tanggal_mulai'])); ?></b>
-                </small>
-              </p>
               <p class="card-text">Batas Pendaftaran: 
                 <small class="text-body-secondary">
                   <b><?= date('d F Y, H:i', strtotime($kegiatan['batas_pendaftaran'])) . " WIB"; ?></b>
                 </small>
+              </p>
+
+              <p class="card-text">Deskripsi Kegiatan:
+                <?= $kegiatan['deskripsi_kegiatan'];?>
               </p>
               <br><br>
               <a href="/">Kembali ke Beranda</a>

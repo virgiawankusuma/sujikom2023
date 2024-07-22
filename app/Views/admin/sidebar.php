@@ -29,6 +29,12 @@
             <span>Semua Kegiatan</span>
         </a>
     </li>
+    <li class="nav-item <?= ($title == 'Kategori | Kegiatan') ? 'active' : ''; ?>">
+        <a class="nav-link pb-1" href="<?= base_url('admin/kategori'); ?>">
+            <i class="fas fa-fw fa-tags"></i>
+            <span>Kategori</span>
+        </a>
+    </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider mt-3 mt-3 d-none d-md-block">

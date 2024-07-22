@@ -23,9 +23,6 @@
               <p class="card-text">Tanggal Kegiatan: 
                 <b><?= date('d F Y', strtotime($kegiatan['tanggal_kegiatan'])); ?></b>
               </p>
-              <p class="card-text">Tanggal Mulai: 
-                <b><?= date('d F Y', strtotime($kegiatan['tanggal_mulai'])); ?></b>
-              </p>
               <p class="card-text">Batas Pendaftaran: 
                 <b><?= date('d F Y, H:i', strtotime($kegiatan['batas_pendaftaran'])) . " WIB"; ?></b>
               </p>

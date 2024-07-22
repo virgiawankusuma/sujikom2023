@@ -18,6 +18,7 @@ class Kegiatan extends BaseController
  
     public function index(){
         $kegiatans = $this->kegiatanModel->getKegiatan();
+        // dd($kegiatans);
         
         $data = [
             'title' => 'Home | Kegiatan',
@@ -29,13 +30,13 @@ class Kegiatan extends BaseController
 
     public function detail($slug) {
         $kegiatan = $this->kegiatanModel->getKegiatan($slug);
+        // dd($kegiatan);
 
         $data = [
         'title' => 'Detail | Kegiatan',
         'kegiatan' => $kegiatan
         ];
 
-        // Jika buku tidak ada di tabel
         if (empty($data['kegiatan'])) {
         throw new \CodeIgniter\Exceptions\PageNotFoundException('Nama Kegiatan ' . $slug . ' not found.');
         }

@@ -110,9 +110,9 @@
     <script>
       $(document).ready(function() {
         $('#tablePosts').DataTable({
-          "order": [
-              [0, "desc"]
-          ],
+        //   "order": [
+        //       [0, "asc"]
+        //   ],
           pageLength: 7,
           lengthMenu: [
               [7, 15, 30, 50, -1],

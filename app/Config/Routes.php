@@ -50,6 +50,13 @@ $routes->post('/admin/kegiatan/save', 'admin::save');
 $routes->delete('admin/kegiatan/(:num)', 'admin::delete/$1');
 $routes->get('/admin/kegiatan/(:any)', 'admin::edit/$1');
 $routes->put('/admin/kegiatan/(:num)', 'admin::update/$1');
+
+$routes->get('/admin/kategori', 'admin::kategori');
+$routes->get('/admin/kategori/add', 'admin::kategori_create');
+$routes->post('/admin/kategori/save', 'admin::kategori_save');
+$routes->delete('admin/kategori/(:num)', 'admin::kategori_delete/$1');
+$routes->get('/admin/kategori/(:any)', 'admin::kategori_edit/$1');
+$routes->put('/admin/kategori/(:num)', 'admin::kategori_update/$1');
 /*
  * --------------------------------------------------------------------
  * Additional Routing

@@ -5,17 +5,20 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\UserModel;
 use App\Models\KegiatanModel;
+use App\Models\KategoriKegiatanModel;
 
 class Admin extends BaseController
 {
 
     protected $userModel;
     protected $kegiatanModel;
+    protected $kategoriKegiatanModel;
     protected $user;
     public function __construct()
     {
         $this->userModel = new UserModel();
         $this->kegiatanModel = new KegiatanModel();
+        $this->kategoriKegiatanModel = new KategoriKegiatanModel();
         $this->user = $this->userModel->getUser(session()->get('email'))->first();
     }
     
@@ -46,7 +49,7 @@ class Admin extends BaseController
             'user' => $this->user
         ];
         
-        return view('admin/kegiatan', $data);
+        return view('admin/kegiatan/index', $data);
     }
     
     public function create()
@@ -58,10 +61,11 @@ class Admin extends BaseController
         $data = [
             'title' => 'Tambah | Kegiatan',
             'errors' => validation_errors(),
-            'user' => $this->user
+            'user' => $this->user,
+            'kategori' => $this->kategoriKegiatanModel->findAll()
         ];
         
-        return view('admin/create', $data);
+        return view('admin/kegiatan/create', $data);
     }
 
     public function save()
@@ -79,13 +83,19 @@ class Admin extends BaseController
                     'is_unique' => '{field} Kegiatan already exists'
                 ]
             ],
-            'tanggal_kegiatan' => [
+            'kategori_kegiatan' => [
                 'rules' => 'required',
                 'errors' => [
                     'required' => '{field} Kegiatan cannot be blank.'
                 ]
             ],
-            'tanggal_mulai' => [
+            'deskripsi_kegiatan' => [
+                'rules' => 'required|',
+                'errors' => [
+                    'required' => '{field} Kegiatan cannot be blank.',
+                ]
+            ],
+            'tanggal_kegiatan' => [
                 'rules' => 'required',
                 'errors' => [
                     'required' => '{field} Kegiatan cannot be blank.'
@@ -97,20 +107,30 @@ class Admin extends BaseController
                     'required' => '{field} Kegiatan cannot be blank.'
                 ]
             ],
+            'link_pendaftaran' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} Kegiatan cannot be blank.'
+                ]
+            ],
         ];
 
         if ($this->validate($validationRules)) {
             $inputData = [
                 'nama_kegiatan' => $this->request->getVar('nama_kegiatan'),
+                'kategori_id' => (int)$this->request->getVar('kategori_kegiatan'),
+                'deskripsi_kegiatan' => $this->request->getVar('deskripsi_kegiatan'),
                 'slug' => url_title($this->request->getVar('nama_kegiatan'), '-', true),
                 'tanggal_kegiatan' => $this->request->getVar('tanggal_kegiatan'),
-                'tanggal_mulai' => $this->request->getVar('tanggal_mulai'),
                 'batas_pendaftaran' => $this->request->getVar('batas_pendaftaran'),
+                'link_pendaftaran' => $this->request->getVar('link_pendaftaran'),
             ];
+
+            // dd($inputData);
     
             $this->kegiatanModel->save($inputData);
             
-            session()->setFlashdata('message', 'Kegiatan has been added.');
+            session()->setFlashdata('messageSuccess', 'Kegiatan has been added.');
     
             return redirect()->to('/admin/kegiatan');
         } else {
@@ -124,7 +144,7 @@ class Admin extends BaseController
 
         $this->kegiatanModel->delete($id);
 
-        session()->setFlashdata('message', 'Kegiatan has been deleted.');
+        session()->setFlashdata('messageSuccess', 'Kegiatan has been deleted.');
 
         return redirect()->to('/admin/kegiatan');
     }
@@ -133,15 +153,18 @@ class Admin extends BaseController
         if (is_logged_in() === false) {
             return redirect()->to('/login');
         }
+
+        // dd($this->kegiatanModel->getKegiatan($slug));
         
         $data = [
           'title' => 'Edit | Kegiatan',
           'kegiatan' => $this->kegiatanModel->getKegiatan($slug),
           'errors' => validation_errors(),
-          'user' => $this->user
+          'user' => $this->user,
+          'kategori' => $this->kategoriKegiatanModel->findAll()
         ];
     
-        return view('admin/edit', $data);
+        return view('admin/kegiatan/edit', $data);
     }
 
     public function update($id) {
@@ -163,19 +186,31 @@ class Admin extends BaseController
                     'is_unique' => '{field} Kegiatan already exists'
                 ]
             ],
+            'kategori_kegiatan' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} Kegiatan cannot be blank.'
+                ]
+            ],
+            'deskripsi_kegiatan' => [
+                'rules' => 'required|',
+                'errors' => [
+                    'required' => '{field} Kegiatan cannot be blank.',
+                ]
+            ],
             'tanggal_kegiatan' => [
                 'rules' => 'required',
                 'errors' => [
                     'required' => '{field} Kegiatan cannot be blank.'
                 ]
             ],
-            'tanggal_mulai' => [
+            'batas_pendaftaran' => [
                 'rules' => 'required',
                 'errors' => [
                     'required' => '{field} Kegiatan cannot be blank.'
                 ]
             ],
-            'batas_pendaftaran' => [
+            'link_pendaftaran' => [
                 'rules' => 'required',
                 'errors' => [
                     'required' => '{field} Kegiatan cannot be blank.'
@@ -188,20 +223,154 @@ class Admin extends BaseController
             $inputData = [
                 'id' => $id,
                 'nama_kegiatan' => $this->request->getVar('nama_kegiatan'),
+                'kategori_id' => (int)$this->request->getVar('kategori_kegiatan'),
+                'deskripsi_kegiatan' => $this->request->getVar('deskripsi_kegiatan'),
                 'slug' => $slug,
                 'tanggal_kegiatan' => $this->request->getVar('tanggal_kegiatan'),
-                'tanggal_mulai' => $this->request->getVar('tanggal_mulai'),
                 'batas_pendaftaran' => $this->request->getVar('batas_pendaftaran'),
+                'link_pendaftaran' => $this->request->getVar('link_pendaftaran'),
             ];
             $this->kegiatanModel->save($inputData);
         
-            session()->setFlashdata('message', 'Kegiatan has been added.');
+            session()->setFlashdata('messageSuccess', 'Kegiatan has been updated.');
         } else {
             return redirect()->back()->withInput();
         }
     
 
         return redirect()->to('/admin/kegiatan');
+    }
+
+    public function kategori()
+    {
+        if (is_logged_in() === false) {
+            return redirect()->to('/login');
+        }
+        
+        $data = [
+            'title' => 'Kategori | Kegiatan',
+            'kategoris' => $this->kategoriKegiatanModel->findAll(),
+            'user' => $this->user
+        ];
+        
+        return view('admin/kategori/index', $data);
+    }
+
+    public function kategori_create()
+    {
+        if (is_logged_in() === false) {
+            return redirect()->to('/login');
+        }
+        
+        $data = [
+            'title' => 'Tambah | Kategori',
+            'errors' => validation_errors(),
+            'user' => $this->user
+        ];
+        
+        return view('admin/kategori/create', $data);
+    }
+
+    public function kategori_save()
+    {
+        if (is_logged_in() === false) {
+            return redirect()->to('/login');
+        }
+        
+        // validation
+        $validationRules = [
+            'nama_kategori' => [
+                'rules' => 'required|is_unique[kategori_kegiatan.nama_kategori]',
+                'errors' => [
+                    'required' => '{field} Kategori cannot be blank.',
+                    'is_unique' => '{field} Kategori already exists'
+                ]
+            ]
+        ];
+
+        if ($this->validate($validationRules)) {
+            $inputData = [
+                'nama_kategori' => $this->request->getVar('nama_kategori'),
+                'slug' => url_title($this->request->getVar('nama_kategori'), '-', true),
+            ];
+    
+            $this->kategoriKegiatanModel->save($inputData);
+            
+            session()->setFlashdata('messageSuccess', 'Kategori has been added.');
+    
+            return redirect()->to('/admin/kategori');
+        } else {
+            return redirect()->back()->withInput();
+        }
+    }
+
+    public function kategori_delete($id)
+    {
+        // cek dengan relasi kegiatan
+        if ($this->kegiatanModel->where('kategori_id', $id)->countAllResults() > 0) {
+            session()->setFlashdata('messageError', 'Kategori cannot be deleted because it is used in the activity.');
+            return redirect()->to('/admin/kategori');
+        }
+
+        $this->kategoriKegiatanModel->delete($id);
+
+        session()->setFlashdata('messageSuccess', 'Kategori has been deleted.');
+
+        return redirect()->to('/admin/kategori');
+    }
+
+    public function kategori_edit($slug) {
+        if (is_logged_in() === false) {
+            return redirect()->to('/login');
+        }
+        
+        $data = [
+          'title' => 'Edit | Kategori',
+          'kategori' => $this->kategoriKegiatanModel->getKategori($slug),
+          'errors' => validation_errors(),
+          'user' => $this->user
+        ];
+    
+        return view('admin/kategori/edit', $data);
+    }
+
+    public function kategori_update($id) {
+        // cek judul
+        $kategoriOld = $this->kategoriKegiatanModel->getKategori($this->request->getVar('slug'));
+    
+        if($kategoriOld['nama_kategori'] == $this->request->getVar('nama_kategori')) {
+          $ruleTitle = 'required';
+        } else {
+          $ruleTitle = 'required|is_unique[kategori_kegiatan.nama_kategori]';
+        }
+    
+        // validation
+        $validationRules = [
+            'nama_kategori' => [
+                'rules' => $ruleTitle,
+                'errors' => [
+                    'required' => '{field} Kategori cannot be blank.',
+                    'is_unique' => '{field} Kategori already exists'
+                ]
+            ]
+        ];
+
+        if ($this->validate($validationRules)) {
+            $slug = url_title($this->request->getVar('nama_kategori'), '-', true);
+            $inputData = [
+                'id' => $id,
+                'nama_kategori' => $this->request->getVar('nama_kategori'),
+                'slug' => $slug,
+            ];
+            $this->kategoriKegiatanModel->save($inputData);
+        
+            session()->setFlashdata('messageSuccess', 'Kategori has been updated.');
+        } else {
+            return redirect()->back()->withInput();
+        }
+    
+
+        return redirect()->to('/admin/kategori');
     }
 
     public function profile()
@@ -267,7 +436,7 @@ class Admin extends BaseController
                 'email' => $this->request->getVar('email'),
             ]);
 
-            session()->setFlashdata('message', 'Profile has been updated.');
+            session()->setFlashdata('messageSuccess', 'Profile has been updated.');
 
             return redirect()->to('/admin/profil');
         } else {
@@ -316,7 +485,7 @@ class Admin extends BaseController
                 'password' => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT)
             ]);
 
-            session()->setFlashdata('message', 'Password has been updated.');
+            session()->setFlashdata('messageSuccess', 'Password has been updated.');
 
             return redirect()->to('/admin/ubah-password');
         } else {
