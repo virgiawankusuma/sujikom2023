@@ -1,9 +1,9 @@
 <?= $this->extend('layout/template'); ?>
 
 <?= $this->section('content'); ?>
-<div class="container">
+<div class="container mt-4">
   <div class="row">
-    <div class="col-12 mt-2">
+    <div class="col-12">
       <h1>Detail Kegiatan</h1>
     </div>
     <div class="col-12">
